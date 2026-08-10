@@ -1,17 +1,23 @@
-// Basic operations
+//Перебір масиву ключовими циклами
 /*
-1.1. Створити числовий масив та проініціалізувати його 5-7 довільними числами.
-1.2. Вивести в консоль, а потім видалити з масиву перший та останній елементи
-       (програма має вивести: "Видалено перший: X, Видалено останній: Y").
-1.3. Ввести і додати нове число на початок масиву та ще одне число в кінець масиву.
-1.4. Зробити копії масиву:
-     - повну копію всього масиву кількома способами;
-     - копію елементів з 0-го по 3-й індекс (включно).
+(Не використовувати методи перебору масивів (forEach, filter, map, findIndex))
+2.1. Вивести елементи з парними індексами.
+2.2. Знайти добуток елементів масиву.
+2.3. Порахувати та вивести в консоль кількість додатних елементів у масиві.
 */
-const nums = [1, 2, 7, -9, 8];
-console.log(nums);
-console.log(`Видалено перший елемент: ${nums.shift()}`);
-console.log(`Видалено останный елемент: ${nums.pop()}`);
+const nums = [0, 3, 78, 8, 9, 4, -2];
+for (let i = 0; i < nums.length; i += 2) {
+  // console.log(`${i} even num: ${nums[i]}`);
+}
 
-nums.unshift(+prompt("Input first num"));
-nums.push(+prompt("Input last num"));
+let multiply = 1;
+for (let i = 0; i < nums.length; i++) {
+  if (nums[i] !== 0) multiply *= nums[i];
+}
+console.log(`Multiply of nums: ${multiply}`);
+
+let overzero = 0;
+for (let i = 0; i < nums.length; i++) {
+  nums[i] > 0 ? overzero++ : (overzero += 0);
+}
+console.log(`Count overzero numbers: ${overzero}`);
