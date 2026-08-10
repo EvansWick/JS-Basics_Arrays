@@ -1,45 +1,92 @@
-// Методи перебору масивів
-/*
-3.1. Отримати новий масив із заданого, який міститиме лише ненульові числа
-       (-1, 5, 0, 9, -10 => -1, 5, 9, -10). 
-3.2. Отримати новий масив їх заданого, який міститиме всі елементи вихідного, поділені на 100
-       (99, 5, 0, 9, 30 => 0.99, 0.05, 0, 0.09, 0.3). 
-3.3. Вивести елементи масиву, зведені у куб. 
-3.4. Визначити індекс елемента, квадрат якого дорівнює 100, і видалити його, або видати діагностичне повідомлення, якщо такого елементу не існує. 
-3.5. Знайти в масиві перше число, яке є більшим за 50. Вивести це число в консоль. Якщо такого числа немає — вивести undefined.
+// Challenge (за бажанням). Робота з масивами об'єкті
 
-*/
-// 1
-const arr2 = [99, 5, 0, 9, 30];
-console.log(`Array:`, arr2);
-const arrNoZero = arr2.filter((item) => item !== 0);
-// console.log(arrNoZero);
+// Функція-конструктор для створення користувачів
+function User(id, name, surname, age, isMale, email, isSubscribed) {
+  this.id = id;
+  this.firstName = name;
+  this.lastName = surname;
+  this.age = age;
+  this.isMale = isMale;
+  this.email = email;
+  this.isSubscribed = isSubscribed;
+}
 
-// 2
-const arr2Divide100 = arr2.map((item) => item / 100);
-// console.log(arr2Divide100);
+const users = [];
 
-// 3
-// arr2.forEach((item, index) =>
-//   console.log(`${index} item of array in cube: ${item ** 3}`),
-// );
+// Заповнення масиву десятьма об'єктами з описом користувача
+for (let i = 0; i < 10; i++) {
+  const user = new User(
+    i + 1,
+    `Username${i}`,
+    `Usersurname${i}`,
+    Math.floor(Math.random() * 90), // випадковий вік від 0 до 89
+    Math.random() < 0.5, // випадкова стать
+    `useremail${i}@gmail.com`,
+    Math.random() < 0.5, // випадкова підписка
+  );
+  users.push(user);
+}
 
-// 4
-const does100InSqrt = (item) => item ** 2 === 100;
-let res = arr2.findIndex(does100InSqrt);
-res === -1;
-// ? console.log("No elements in array = 100 in sqrt")
-// : console.log(`In array ${res} element = 100 in sqrt`);
+//4.0. ⭐ Прописати в прототипі метод getFullName(), що повертає рядок з повним ім'ям для користувача.
+function getFullName() {
+  return `${this.firstName} ${this.lastName}`;
+}
+// Object.assign(User.prototype, { getName });
+User.prototype.getFullName = getFullName;
+console.log(users[0].getFullName());
 
-arr2.push(10);
-console.log(`Array:`, arr2);
-res = arr2.findIndex(does100InSqrt);
-res === -1;
-// ? console.log("No elements in array = 100 in sqrt")
-// : console.log(`In array ${res} element = 100 in sqrt`);
+// 4.1. ⭐ Отримати масив користувачів, які не підписані (not subscribed).
+const unSubscribers = users.filter((item) => item.isSubscribed);
+// console.log(unSubscribers);
 
-// 5
-console
-  .log
-  // `The first element in array > 50 is: ${arr2.find((item) => item > 50)}`,
-  ();
+// 4.2. ⭐ Вивести список повних імен користувачів.
+// users.forEach((item) => console.log(item.getFullName()));
+
+// 4.3. ⭐ Отримати масив повних імен осіб жіночої статі шкільного віку (6 – 18 років).
+console.log(users);
+const childrenNames = users
+  .filter((item) => item.age <= 18 && item.age >= 6 && !item.isMale)
+  .map((item) => item.getFullName());
+// console.log(childrenNames);
+
+// 4.4. ⭐ Видалити з масиву користувача з email  useremail5@gmail.com.
+if (users.findIndex((item) => item.email === "useremail5@gmail.com") !== -1)
+  users.splice(
+    users.findIndex((item) => item.email === "useremail5@gmail.com"),
+    1,
+  );
+else console.log("Такого користувача не існує");
+// console.log(users);
+
+// 4.5. ⭐ Змінити email користувачу з id 2 (можна спробувати використати find).
+let res = users.find((item) => item.id === 2);
+if (res !== undefined)
+  users[users.findIndex((item) => item.id === 2)].email =
+    "useremail222@gmail.com";
+else console.log("Такого користувача не існує");
+
+// 4.6. ⭐ Визначити, який відсоток користувачів підписані (subscribed).
+if (users.length !== 0)
+  console.log(
+    `Відсоток підписаних користувачів: ${Math.floor(
+      (users.filter((item) => item.isSubscribed).length / users.length) * 100,
+    )}%`,
+  );
+else console.log("Користувачі відсутні взагалі");
+
+// 4.7. ⭐ Знайти середній вік користувачів (спробувати використати reduce).
+console.log(
+  `Середній вік користувачів: ${Math.floor(
+    users.reduce((calk, item) => calk + item.age, 0) / (users.length || 1),
+  )}`,
+);
+
+// 4.8. ⭐ Впорядкувати користувачів за віком (від наймолодшого до найстаршого) (sort).
+users.sort((a, b) => a.age - b.age);
+// console.log(users);
+
+// 4.9. ⭐ Перевірити, чи є в масиві користувач з email'ом useremail7@gmail.com.
+const result = users.findIndex((item) => item.email === "useremail7@gmail.com");
+result === -1
+  ? console.log("Такого користувача не існує")
+  : console.log(`Це користувач з айді: ${users[result].id}`);
