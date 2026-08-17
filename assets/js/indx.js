@@ -35,8 +35,8 @@ function getFullName() {
 User.prototype.getFullName = getFullName;
 console.log(users[0].getFullName());
 
-// 4.1. ⭐ Отримати масив користувачів, які не підписані (not subscribed).
-const unSubscribers = users.filter((item) => item.isSubscribed);
+// 4.1. ⭐ Отримати масив користувачів, які не підписані (not subscribed). //                                            Fixed
+const unSubscribers = users.filter((item) => !item.isSubscribed);
 // console.log(unSubscribers);
 
 // 4.2. ⭐ Вивести список повних імен користувачів.
@@ -49,12 +49,11 @@ const childrenNames = users
   .map((item) => item.getFullName());
 // console.log(childrenNames);
 
-// 4.4. ⭐ Видалити з масиву користувача з email  useremail5@gmail.com.
-if (users.findIndex((item) => item.email === "useremail5@gmail.com") !== -1)
-  users.splice(
-    users.findIndex((item) => item.email === "useremail5@gmail.com"),
-    1,
-  );
+// 4.4. ⭐ Видалити з масиву користувача з email  useremail5@gmail.com.  //                                               fixed
+let foundIndex = users.findIndex(
+  (item) => item.email === "useremail5@gmail.com",
+);
+if (foundIndex !== -1) users.splice(foundIndex, 1);
 else console.log("Такого користувача не існує");
 // console.log(users);
 
@@ -85,8 +84,8 @@ console.log(
 users.sort((a, b) => a.age - b.age);
 // console.log(users);
 
-// 4.9. ⭐ Перевірити, чи є в масиві користувач з email'ом useremail7@gmail.com.
-const result = users.findIndex((item) => item.email === "useremail7@gmail.com");
-result === -1
+// 4.9. ⭐ Перевірити, чи є в масиві користувач з email'ом useremail7@gmail.com.  //                                      fixed
+const result = users.some((item) => item.email === "useremail7@gmail.com");
+result
   ? console.log("Такого користувача не існує")
   : console.log(`Це користувач з айді: ${users[result].id}`);
